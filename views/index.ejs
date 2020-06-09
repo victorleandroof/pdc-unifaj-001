@@ -1,0 +1,97 @@
+<html>
+
+<head>
+    <title>Jogo Adivinha Idade</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+
+<body>
+    <section class="demo">
+        <div class="container cards">
+            <% card1Response.map((v,k) => { %>       
+                <div class="column">
+                    <div class="card">
+                        <div class="card_content">
+                            <center>
+                                <table>
+                                    <%v[`card${k}`].forEach(rows => { %>
+                                        <tr>
+                                            <% rows.row.forEach(row=>{%>
+                                                <td><%=row%></td>    
+                                            <%});%>
+                                        </tr>
+                                    <%}) %>
+                                </table>
+                                <a class="card_button btn" href="#" data-id="<%=`btn_1_${k}`%>" role="button">Escolher</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <br><br>
+        <div class="container cards">
+            <% card2Response.map((v,k) => { %>       
+                <div class="column">
+                    <div class="card">
+                        <div class="card_content">
+                            <center>
+                                <table>
+                                    <%v[`card${k}`].forEach(rows => { %>
+                                        <tr>
+                                            <% rows.row.forEach(row=>{%>
+                                                <td><%=row%></td>    
+                                            <%});%>
+                                        </tr>
+                                    <%}) %>
+                                </table>
+                                <a class="card_button btn" href="#" data-id="<%=`btn_2_${k}`%>" role="button">Escolher</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+    <div class="center">
+        <a class="card_button" id="btnAdivinhar" href="#"  role="button">Adivinhar</a>
+        <a class="card_button" id="btnLimpar" href="#"  role="button">Limpar</a>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready((ev)=>{
+        $('.btn').on('click',(e)=>{
+            e.preventDefault();
+            let $this = $(e.target);
+            let dataId = $this.data('id');
+            let escolhas = JSON.parse(localStorage.getItem('escolhas')) || {};
+            if(escolhas[dataId]){
+                alert('HMMM Você ja inseriu esse cartão');
+            }else {
+                escolhas[dataId] = 1;
+                localStorage.setItem('escolhas',JSON.stringify(escolhas));
+            }
+        });
+        $('#btnAdivinhar').click((e)=>{
+            e.preventDefault();
+            let values = {"btn_1_0":1, "btn_1_1":2, "btn_1_2":4, "btn_2_0":8, "btn_2_1":16, "btn_2_2":32}
+            let escolhas = JSON.parse(localStorage.getItem('escolhas'));
+            let escolhasKey = Object.keys(escolhas);
+            let sum = 0;
+            escolhasKey.forEach(key=>{
+                let value = values[key];
+                sum += value;
+            });
+            alert(`AAA SUA IDADE É: ${sum}`);
+        });
+        $('#btnLimpar').click((e)=>{
+            localStorage.removeItem('escolhas');
+        });
+    })
+</script>
+</html>
